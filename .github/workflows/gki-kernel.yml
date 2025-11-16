@@ -639,55 +639,55 @@ jobs:
           CONFIG_FILE=./common/arch/arm64/configs/gki_defconfig
 
           # Add additional config setting
-          echo "CONFIG_IP_NF_TARGET_TTL=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_TARGET_HL=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_MATCH_HL=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_NF_TARGET_TTL=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_TARGET_HL=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_MATCH_HL=m" >> "$CONFIG_FILE"
 
           # Add IP_SET support
           echo "CONFIG_NETFILTER=y" >> "$CONFIG_FILE"
           echo "CONFIG_NETFILTER_ADVANCED=y" >> "$CONFIG_FILE"
           echo "CONFIG_NETFILTER_XTABLES=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET=m" >> "$CONFIG_FILE"
           echo "CONFIG_IP_SET_MAX=256" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_BITMAP_IP=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_BITMAP_IPMAC=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_BITMAP_PORT=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_IP=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_IPMARK=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_IPPORT=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_IPPORTIP=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_IPPORTNET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_IPMAC=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_MAC=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_NETPORTNET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_NET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_NETNET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_NETPORT=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_HASH_NETIFACE=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_SET_LIST_SET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP_NF_SET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_BITMAP_IP=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_BITMAP_IPMAC=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_BITMAP_PORT=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IP=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPMARK=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPPORT=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPPORTIP=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPPORTNET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPMAC=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_MAC=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETPORTNET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETNET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETPORT=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETIFACE=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_LIST_SET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_NF_SET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_SET=m" >> "$CONFIG_FILE"
 
           # Add iptables set extension support (CRITICAL for ipset to work with iptables!)
-          echo "CONFIG_NETFILTER_XT_SET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_MATCH_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_SET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_SET=m" >> "$CONFIG_FILE"
 
           # Add other useful Netfilter XT extensions
-          echo "CONFIG_NETFILTER_XT_TARGET_TPROXY=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_TARGET_REDIRECT=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_TARGET_MARK=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_MATCH_SOCKET=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_MATCH_OWNER=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_MATCH_MARK=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> "$CONFIG_FILE"
-          echo "CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_TARGET_TPROXY=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_TARGET_REDIRECT=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_TARGET_MARK=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_SOCKET=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_OWNER=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_MARK=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=m" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m" >> "$CONFIG_FILE"
 
           # Add IPv6 NAT support
-          echo "CONFIG_NF_NAT=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_IPTABLES=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_NAT=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_TARGET_MASQUERADE=y" >> "$CONFIG_FILE"
-          echo "CONFIG_IP6_NF_TARGET_NPT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NF_NAT=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_IPTABLES=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_NAT=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_TARGET_MASQUERADE=m" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_TARGET_NPT=m" >> "$CONFIG_FILE"
 
           # Add BBR Config
           echo "CONFIG_TCP_CONG_ADVANCED=y" >> "$CONFIG_FILE"
@@ -801,7 +801,7 @@ jobs:
             if [ -f "build/build.sh" ]; then
               LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
             else
-              tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast --lto=thin --verbose_failures --subcommands //common:kernel_aarch64_dist || exit 1
+              tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast --lto=thin //common:kernel_aarch64_dist || exit 1
               echo "debug:输出内核版本号"
               strings ./bazel-bin/common/kernel_aarch64/Image | grep 'Linux version'
             fi
