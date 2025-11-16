@@ -49,11 +49,6 @@ on:
         required: true
         type: boolean
         default: true
-      use_netopt:
-        description: '是否开启网络优化(ipset/iptables/BBR/IPv6 NAT)?'
-        required: true
-        type: boolean
-        default: false
       get_manager:
         description: '获取最新KSU管理器和SUS模块?'
         required: true
@@ -78,7 +73,6 @@ jobs:
       use_zram: ${{ inputs.use_zram }}
       use_bbg: ${{ inputs.use_bbg }}
       use_kpm: ${{ inputs.use_kpm }}
-      use_netopt: ${{ inputs.use_netopt }}
       onlyAk3: ${{ inputs.onlyAk3 }}
       build_time: ${{ inputs.build_time }}
   get-ksu-manager:
