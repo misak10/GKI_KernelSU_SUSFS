@@ -37,16 +37,6 @@ on:
         required: true
         type: boolean
         default: true
-      use_netopt:
-        description: '是否开启网络优化(启用 ipset/iptables/IPv6 NAT/BBR 配置)?'
-        required: true
-        type: boolean
-        default: false
-      supp_op:
-        description: '是否开启一加8E处理器机型支持?'
-        required: false
-        type: boolean
-        default: false
       onlyAk3:
         description: '仅上传AK3压缩包?(无boot,下载更快)'
         required: false
@@ -100,7 +90,6 @@ jobs:
       use_zram: ${{ inputs.use_zram }}
       use_bbg: ${{ inputs.use_bbg }}
       use_kpm: ${{ inputs.use_kpm }}
-      use_netopt: ${{ inputs.use_netopt }}
       supp_op: ${{ inputs.supp_op || false }}
       onlyAk3: ${{ inputs.onlyAk3 || false }}
       build_time: ${{ inputs.build_time || '' }}
