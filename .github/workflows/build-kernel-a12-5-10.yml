@@ -17,7 +17,7 @@ on:
           - Next
           - MKSU
           - SukiSU
-        default: SukiSU
+        default: Official
       kernelsu_branch:
         description: "选择 ksu 分支"
         required: true
@@ -53,6 +53,11 @@ on:
         description: '是否开启KPM功能?'
         required: true
         type: boolean
+        default: false
+      net_opt:
+        description: '是否开启网络优化? (Netfilter/IPSet/IPv6 NAT/BBR)'
+        required: true
+        type: boolean
         default: true
       get_manager:
         description: '获取最新KSU管理器和SUS模块?'
@@ -63,7 +68,7 @@ on:
         description: '仅上传AK3压缩包?(无boot,下载更快)'
         required: false
         type: boolean
-        default: false
+        default: true
       
 
 jobs:
@@ -79,6 +84,7 @@ jobs:
       use_zram: ${{ inputs.use_zram }}
       use_bbg: ${{ inputs.use_bbg }}
       use_kpm: ${{ inputs.use_kpm }}
+      net_opt: ${{ inputs.net_opt }}
       onlyAk3: ${{ inputs.onlyAk3 }}
       build_time: ${{ inputs.build_time }}
 

@@ -22,7 +22,7 @@ on:
           - Next
           - MKSU
           - SukiSU
-        default: SukiSU
+        default: Official
       kernelsu_branch:
         description: "选择 ksu 分支"
         required: true
@@ -55,11 +55,16 @@ on:
         required: true
         type: boolean
         default: true
+      net_opt:
+        description: '是否开启网络优化? (Netfilter/IPSet/IPv6 NAT/BBR)'
+        required: true
+        type: boolean
+        default: true
       get_manager:
         description: '是否同时获取最新KSU管理器?'
         required: true
         type: boolean
-        default: false
+        default: true
 jobs:
   get_manager:
     uses: ./.github/workflows/get-manager.yml
@@ -79,6 +84,7 @@ jobs:
       use_zram: ${{ inputs.use_zram }}
       use_kpm: ${{ inputs.use_kpm }}
       use_bbg: ${{ inputs.use_bbg }}
+      net_opt: ${{ inputs.net_opt }}
 
   # build-kernel-a13-5-10:
   #   uses: ./.github/workflows/kernel-a13-5.10.yml
@@ -104,6 +110,7 @@ jobs:
       use_zram: ${{ inputs.use_zram }}
       use_kpm: ${{ inputs.use_kpm }}
       use_bbg: ${{ inputs.use_bbg }}
+      net_opt: ${{ inputs.net_opt }}
 
   # build-kernel-a14-5-15:
   #   uses: ./.github/workflows/kernel-a14-5.15.yml
