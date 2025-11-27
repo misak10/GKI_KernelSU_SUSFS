@@ -53,6 +53,10 @@ on:
         required: true
         type: boolean
         default: false
+      net_opt:
+        required: true
+        type: boolean
+        default: true
 jobs:
   build-kernel-kernelsu-susfs:
     runs-on: ubuntu-latest
@@ -503,18 +507,6 @@ jobs:
           echo "CONFIG_TMPFS_XATTR=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TMPFS_POSIX_ACL=y" >> ./common/arch/arm64/configs/gki_defconfig
 
-          # Add additional config setting
-          echo "CONFIG_IP_NF_TARGET_TTL=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_IP6_NF_TARGET_HL=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_IP6_NF_MATCH_HL=y" >> ./common/arch/arm64/configs/gki_defconfig
-
-          # Add BBR Config
-          echo "CONFIG_TCP_CONG_ADVANCED=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_TCP_CONG_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_SCH_FQ=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_TCP_CONG_BIC=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_TCP_CONG_WESTWOOD=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_TCP_CONG_HTCP=n" >> ./common/arch/arm64/configs/gki_defconfig
 
           # Add SUSFS configuration settings
           echo "CONFIG_KSU_SUSFS=y" >> ./common/arch/arm64/configs/gki_defconfig
@@ -539,6 +531,72 @@ jobs:
           # Remove check_defconfig
           sed -i 's/check_defconfig//' ./common/build.config.gki
 
+      - name: 网络优化配置
+        if: ${{ inputs.net_opt }}
+        run: |
+          echo "更改为配置目录: $CONFIG..."
+          cd "$CONFIG"
+          CONFIG_FILE="./common/arch/arm64/configs/gki_defconfig"
+
+          # Add additional config setting
+          echo "CONFIG_IP_NF_TARGET_TTL=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_TARGET_HL=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_MATCH_HL=y" >> "$CONFIG_FILE"
+
+          # Add IP_SET support
+          echo "CONFIG_NETFILTER=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_ADVANCED=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XTABLES=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_MAX=256" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_BITMAP_IP=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_BITMAP_IPMAC=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_BITMAP_PORT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IP=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPMARK=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPPORT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPPORTIP=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPPORTNET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_IPMAC=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_MAC=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETPORTNET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETNET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETPORT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_HASH_NETIFACE=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_SET_LIST_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP_NF_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_SET=y" >> "$CONFIG_FILE"
+
+          # Add iptables set extension support (CRITICAL for ipset to work with iptables!)
+          echo "CONFIG_NETFILTER_XT_SET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_SET=y" >> "$CONFIG_FILE"
+
+          # Add other useful Netfilter XT extensions
+          echo "CONFIG_NETFILTER_XT_TARGET_TPROXY=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_TARGET_REDIRECT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_TARGET_MARK=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_SOCKET=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_OWNER=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_MARK=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y" >> "$CONFIG_FILE"
+
+          # Add IPv6 NAT support
+          echo "CONFIG_NF_NAT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_IPTABLES=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_NAT=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_TARGET_MASQUERADE=y" >> "$CONFIG_FILE"
+          echo "CONFIG_IP6_NF_TARGET_NPT=y" >> "$CONFIG_FILE"
+
+          # Add BBR Config
+          echo "CONFIG_TCP_CONG_ADVANCED=y" >> "$CONFIG_FILE"
+          echo "CONFIG_TCP_CONG_BBR=y" >> "$CONFIG_FILE"
+          echo "CONFIG_NET_SCH_FQ=y" >> "$CONFIG_FILE"
+          echo "CONFIG_TCP_CONG_BIC=n" >> "$CONFIG_FILE"
+          echo "CONFIG_TCP_CONG_WESTWOOD=y" >> "$CONFIG_FILE"
+          echo "CONFIG_TCP_CONG_HTCP=n" >> "$CONFIG_FILE"
+
       - name: 配置内核名称
         run: |
           echo "更改为配置目录: $CONFIG..."
@@ -549,7 +607,7 @@ jobs:
             sed -i '$s|echo "\$res"|echo "${{ inputs.version }}"|' ./common/scripts/setlocalversion
           else
             echo "版本号为空，使用默认值"
-            sed -i '$s|echo "\$res"|echo "\$res-zakozakoooooo-1145141919"|' ./common/scripts/setlocalversion
+            sed -i '$s|echo "\$res"|echo "\$res"|' ./common/scripts/setlocalversion
           fi
 
           # 如果你需要改构建时间,请把以下变量 CURRENT_TIME 修改为如下例子字符串,如:CURRENT_TIME="Sat Jun 07 06:29:29 UTC 2025"
@@ -574,6 +632,19 @@ jobs:
             # sed -E -i '/^CONFIG_LOCALVERSION=/ s/(.*)"$/\1"/' ./common/arch/arm64/configs/gki_defconfig
             if [ ! -z ${{ inputs.version }} ]; then
               sed -i '/^CONFIG_LOCALVERSION=/ s/="\([^"]*\)"/="${{ inputs.version }}"/' ./common/arch/arm64/configs/gki_defconfig
+            else
+              # 当未指定自定义版本且使用 Bazel 构建时，按内核版本生成 KMI 风格后缀
+              cd ./common
+              if [ "${{ inputs.kernel_version }}" = "6.1" ]; then
+                kmi="-android14-11-g$(git rev-parse --verify HEAD | cut -c1-13)"
+                echo "KMI=$kmi"
+                sed -i "\$s|echo \"\\$res\"|echo \"$kmi\"|" ./scripts/setlocalversion
+              elif [ "${{ inputs.kernel_version }}" = "6.6" ]; then
+                kmi="-g$(git rev-parse --verify HEAD | cut -c1-13)-4k"
+                echo "KMI=$kmi"
+                sed -i '/^CONFIG_LOCALVERSION=/ s/="[^"]*"/="'"${kmi}"'"/' ./arch/arm64/configs/gki_defconfig
+              fi
+              cd -
             fi
           fi
 
