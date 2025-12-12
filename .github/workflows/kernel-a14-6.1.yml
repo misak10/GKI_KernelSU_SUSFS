@@ -11,11 +11,11 @@ on:
         type: boolean
         default: true
       kernelsu_variant:
-        required: true
+        required: false
         type: string
         default: Next
       kernelsu_branch:
-        required: true
+        required: false
         type: string
         default: Stable
       version:
@@ -37,6 +37,16 @@ on:
         required: true
         type: boolean
         default: false
+      net_opt:
+        description: '是否启用网络优化? (Netfilter/IPSet/IPv6 NAT/BBR)'
+        required: true
+        type: boolean
+        default: true
+      patch_kernelsu:
+        description: '是否将 KernelSU/SUSFS 补丁写入内核?'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build-kernel-a14-6-1-kernelsu-susfs:
@@ -54,16 +64,16 @@ jobs:
           #  os_patch_level: "2024-03"
           #- sub_level: "75"
           #  os_patch_level: "2024-05"
-          - sub_level: "78"
-            os_patch_level: "2024-06"
+          #- sub_level: "78"
+          #  os_patch_level: "2024-06"
           #- sub_level: "84"
           #  os_patch_level: "2024-07"
-          - sub_level: "90"
-            os_patch_level: "2024-08"
+          #- sub_level: "90"
+          #  os_patch_level: "2024-08"
           #- sub_level: "93"
           #  os_patch_level: "2024-09"
-          - sub_level: "99"
-            os_patch_level: "2024-10"
+          #- sub_level: "99"
+          #  os_patch_level: "2024-10"
           #- sub_level: "112"
           #  os_patch_level: "2024-11"
           #- sub_level: "115"
@@ -78,8 +88,8 @@ jobs:
           #  os_patch_level: "2025-04"
           #- sub_level: "134"
           #  os_patch_level: "2025-05"
-          - sub_level: "145"
-            os_patch_level: "2025-09"
+          #- sub_level: "145"
+          #  os_patch_level: "2025-09"
           #- sub_level: "X"
           #  os_patch_level: "lts"
     uses: ./.github/workflows/gki-kernel.yml
@@ -97,3 +107,5 @@ jobs:
       use_kpm: ${{ inputs.use_kpm }}
       supp_op: ${{ inputs.supp_op || false }}
       BBG: ${{ inputs.BBG || false }}
+      net_opt: ${{ inputs.net_opt || true }}
+      patch_kernelsu: ${{ inputs.patch_kernelsu || false }}

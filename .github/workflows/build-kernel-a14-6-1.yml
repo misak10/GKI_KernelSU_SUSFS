@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     inputs:
       kernelsu_variant:
-        description: "选择 KernelSU"
-        required: true
+        description: "选择 KernelSU (当选择打补丁时有效)"
+        required: false
         type: choice
         options:
           - Official
@@ -18,8 +18,8 @@ on:
           - SukiSU
         default: SukiSU
       kernelsu_branch:
-        description: "选择 ksu 分支"
-        required: true
+        description: "选择 ksu 分支 (当选择打补丁时有效)"
+        required: false
         type: choice
         options:
           - Stable(标准)
@@ -40,6 +40,21 @@ on:
         required: true
         type: boolean
         default: true
+      BBG:
+        description: '是否启用内核层面阻止对关键分区/设备节点的非法写入(LSM)？'
+        required: true
+        type: boolean
+        default: false
+      net_opt:
+        description: '是否开启网络优化? (Netfilter/IPSet/IPv6 NAT/BBR)'
+        required: true
+        type: boolean
+        default: true
+      patch_kernelsu:
+        description: '是否将 KernelSU/SUSFS 补丁写入内核? (默认否)'
+        required: false
+        type: boolean
+        default: false
       get_manager:
         description: '是否同时获取最新KSU管理器?（实验性功能，报错请关闭）'
         required: true
@@ -57,8 +72,11 @@ jobs:
       version: ${{ inputs.version }}
       use_zram: ${{ inputs.use_zram }}
       use_kpm: ${{ inputs.use_kpm }}
+      BBG: ${{ inputs.BBG }}
+      net_opt: ${{ inputs.net_opt }}
+      patch_kernelsu: ${{ inputs.patch_kernelsu }}
   get-ksu-manager:
-    if: ${{ inputs.get_manager }}
+    if: ${{ inputs.patch_kernelsu && inputs.get_manager }}
     uses: ./.github/workflows/get-manager.yml
     secrets: inherit
     with:
