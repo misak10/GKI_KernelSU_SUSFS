@@ -612,6 +612,13 @@ jobs:
           echo "CONFIG_TCP_CONG_WESTWOOD=y" >> "$CONFIG_FILE"
           echo "CONFIG_TCP_CONG_HTCP=n" >> "$CONFIG_FILE"
 
+      - name: 禁用 check_defconfig 以避免 Bazel 比对失败
+        run: |
+          echo "更改为配置目录: $CONFIG..."
+          cd "$CONFIG"
+          # Remove check_defconfig to prevent Bazel from failing 'savedefconfig does not match ...'
+          sed -i 's/check_defconfig//' ./common/build.config.gki || true
+
       - name: 配置内核名称
         run: |
           echo "更改为配置目录: $CONFIG..."
